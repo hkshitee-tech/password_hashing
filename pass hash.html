@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Password Hashing & Security Tool</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #eef3f8;
+    color: #2c3e50;
+}
+
+header {
+    background: #172b4d;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 17px;
+}
+
+.container {
+    width: 90%;
+    max-width: 950px;
+    margin: 30px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #172b4d;
+}
+
+.password-box {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px;
+    border: 2px solid #ccd6e0;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #3498db;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2980b9;
+}
+
+.show-btn {
+    background: #7f8c8d;
+}
+
+.show-btn:hover {
+    background: #636e72;
+}
+
+.copy-btn {
+    margin-top: 10px;
+    background: #27ae60;
+}
+
+.copy-btn:hover {
+    background: #219150;
+}
+
+.output {
+    background: #f8fafc;
+    border: 2px solid #3498db;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.hash-box {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f1f6fa;
+    border: 1px solid #ccd6e0;
+    border-radius: 8px;
+}
+
+.hash-box h4 {
+    margin-top: 0;
+    color: #172b4d;
+    font-size: 18px;
+}
+
+.hash-box p {
+    font-family: monospace;
+    font-size: 14px;
+    word-break: break-all;
+    background: white;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.step {
+    flex: 1;
+    min-width: 150px;
+    padding: 20px;
+    background: #f1f6fa;
+    border-radius: 10px;
+}
+
+.step-icon {
+    font-size: 32px;
+}
+
+.arrow {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.info-cards {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.info-card {
+    flex: 1;
+    min-width: 200px;
+    background: #f1f6fa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.info-card h3 {
+    color: #172b4d;
+}
+
+.algorithm-box {
+    background: #f1f6fa;
+    padding: 18px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.algorithm-box h3 {
+    color: #172b4d;
+    margin-top: 0;
+}
+
+.algorithm-box p {
+    line-height: 1.5;
+}
+
+.warning {
+    background: #fff7df;
+    border-left: 5px solid #f1c40f;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+footer {
+    background: #172b4d;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 28px 15px;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    header p {
+        font-size: 15px;
+    }
+
+    .container {
+        width: 94%;
+        margin: 20px auto;
+    }
+
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .password-box {
+        flex-direction: column;
+    }
+
+    input,
+    button {
+        width: 100%;
+    }
+
+    .steps {
+        flex-direction: column;
+    }
+
+    .step {
+        width: 100%;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+    }
+
+    .info-card {
+        min-width: 100%;
+    }
+
+    .hash-box p {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🔐 Password Hashing & Security Tool</h1>
+
+<p>Learn how passwords are converted into hash values</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>🔑 Enter Your Password</h2>
+
+<p>
+Enter a password below to generate its hash using different algorithms.
+</p>
+
+<div class="password-box">
+
+<input
+type="password"
+id="password"
+placeholder="Enter password"
+>
+
+<button
+class="show-btn"
+onclick="togglePassword()"
+>
+Show
+</button>
+
+<button onclick="generateAllHashes()">
+🔐 Hash Password
+</button>
+
+</div>
+
+<div class="output">
+
+<h3>🔐 Generated Hashes</h3>
+
+<div class="hash-box">
+
+<h4>MD5</h4>
+
+<p id="md5Result">Hash will appear here.</p>
+
+<button
+class="copy-btn"
+onclick="copyHash('md5Result')"
+>
+📋 Copy MD5
+</button>
+
+</div>
+
+<div class="hash-box">
+
+<h4>SHA-1</h4>
+
+<p id="sha1Result">Hash will appear here.</p>
+
+<button
+class="copy-btn"
+onclick="copyHash('sha1Result')"
+>
+📋 Copy SHA-1
+</button>
+
+</div>
+
+<div class="hash-box">
+
+<h4>SHA-256</h4>
+
+<p id="sha256Result">Hash will appear here.</p>
+
+<button
+class="copy-btn"
+onclick="copyHash('sha256Result')"
+>
+📋 Copy SHA-256
+</button>
+
+</div>
+
+<div class="hash-box">
+
+<h4>SHA-512</h4>
+
+<p id="sha512Result">Hash will appear here.</p>
+
+<button
+class="copy-btn"
+onclick="copyHash('sha512Result')"
+>
+📋 Copy SHA-512
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>⚙️ How It Works</h2>
+
+<div class="steps">
+
+<div class="step">
+
+<div class="step-icon">🔑</div>
+
+<h3>Password</h3>
+
+<p>User enters a password.</p>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="step">
+
+<div class="step-icon">📝</div>
+
+<h3>Encoding</h3>
+
+<p>Password is converted into data.</p>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="step">
+
+<div class="step-icon">🔐</div>
+
+<h3>Hashing</h3>
+
+<p>The algorithm processes the data.</p>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="step">
+
+<div class="step-icon">#️⃣</div>
+
+<h3>Hash Value</h3>
+
+<p>A fixed-length value is created.</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📚 About Password Hashing</h2>
+
+<p>
+Password hashing is used to convert a password into a fixed-length
+value called a hash. The original password is not directly stored.
+</p>
+
+<p>
+Even a small change in the password usually produces a completely
+different hash.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>🔎 About the Hash Algorithms</h2>
+
+<div class="algorithm-box">
+
+<h3>MD5</h3>
+
+<p>
+MD5 produces a 128-bit hash, which is 32 hexadecimal characters long.
+It was commonly used in the past, but it is now considered weak and
+should not be used for secure password storage.
+</p>
+
+</div>
+
+<div class="algorithm-box">
+
+<h3>SHA-1</h3>
+
+<p>
+SHA-1 produces a 160-bit hash, which is 40 hexadecimal characters
+long. It was used in many older security systems, but it is now
+considered outdated for security purposes.
+</p>
+
+</div>
+
+<div class="algorithm-box">
+
+<h3>SHA-256</h3>
+
+<p>
+SHA-256 produces a 256-bit hash, which is 64 hexadecimal characters
+long. It is commonly used in cybersecurity and data integrity
+applications.
+</p>
+
+</div>
+
+<div class="algorithm-box">
+
+<h3>SHA-512</h3>
+
+<p>
+SHA-512 produces a 512-bit hash, which is 128 hexadecimal characters
+long. It belongs to the SHA-2 family and is used in many cryptographic
+applications.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Quick Comparison</h2>
+
+<div class="info-cards">
+
+<div class="info-card">
+
+<h3>MD5</h3>
+
+<p>
+128 bits<br>
+32 characters<br>
+Old / Weak
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>SHA-1</h3>
+
+<p>
+160 bits<br>
+40 characters<br>
+Outdated
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>SHA-256</h3>
+
+<p>
+256 bits<br>
+64 characters<br>
+Widely used
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>SHA-512</h3>
+
+<p>
+512 bits<br>
+128 characters<br>
+Widely used
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🛡️ Security Information</h2>
+
+<div class="info-cards">
+
+<div class="info-card">
+
+<h3>🔒 Hashing</h3>
+
+<p>
+Hashing is a one-way process used to create a fixed-length
+value from data.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>⚠️ MD5 & SHA-1</h3>
+
+<p>
+MD5 and SHA-1 are old algorithms and are not recommended
+for modern security applications.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>🔐 Password Security</h3>
+
+<p>
+Real password systems usually use algorithms such as
+Argon2id, bcrypt or scrypt.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>✨ Features</h2>
+
+<ul>
+
+<li>🔑 Password input</li>
+
+<li>👁️ Show/Hide password</li>
+
+<li>🔐 MD5 hash generation</li>
+
+<li>🔐 SHA-1 hash generation</li>
+
+<li>🔐 SHA-256 hash generation</li>
+
+<li>🔐 SHA-512 hash generation</li>
+
+<li>📋 Copy hash functionality</li>
+
+<li>📚 Hash algorithm information</li>
+
+<li>📊 Hash comparison</li>
+
+<li>📱 Responsive design</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<div class="warning">
+
+<strong>⚠️ Educational Project</strong>
+
+<p>
+This project is made for learning about password hashing and
+different hashing algorithms. It should not be used as a real
+password storage system.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+Created by: Kshitee Hatwalne<br>
+Roll No: 2550007
+
+</footer>
+
+<script>
+
+async function generateAllHashes() {
+
+    const password =
+        document.getElementById("password").value;
+
+    if (password === "") {
+
+        alert("Please enter a password.");
+
+        return;
+
+    }
+
+    try {
+
+        const md5 = md5Hash(password);
+
+        const sha1 =
+            await generateSHA("SHA-1", password);
+
+        const sha256 =
+            await generateSHA("SHA-256", password);
+
+        const sha512 =
+            await generateSHA("SHA-512", password);
+
+        document.getElementById("md5Result").innerText = md5;
+
+        document.getElementById("sha1Result").innerText = sha1;
+
+        document.getElementById("sha256Result").innerText = sha256;
+
+        document.getElementById("sha512Result").innerText = sha512;
+
+    } catch (error) {
+
+        alert("Error generating hashes: " + error.message);
+
+    }
+
+}
+
+async function generateSHA(algorithm, text) {
+
+    const encoder = new TextEncoder();
+
+    const data = encoder.encode(text);
+
+    const hashBuffer =
+        await crypto.subtle.digest(
+            algorithm,
+            data
+        );
+
+    const hashArray =
+        Array.from(
+            new Uint8Array(hashBuffer)
+        );
+
+    return hashArray
+        .map(
+            byte =>
+                byte.toString(16).padStart(2, "0")
+        )
+        .join("");
+
+}
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.querySelector(".show-btn");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        button.innerText = "🙈 Hide";
+
+    } else {
+
+        password.type = "password";
+
+        button.innerText = "👁️ Show";
+
+    }
+
+}
+
+async function copyHash(elementId) {
+
+    const hash =
+        document.getElementById(elementId).innerText;
+
+    if (hash === "Hash will appear here.") {
+
+        alert("Generate the hash first.");
+
+        return;
+
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(hash);
+
+        alert("Hash copied to clipboard!");
+
+    } catch (error) {
+
+        alert("Unable to copy hash.");
+
+    }
+
+}
+
+function md5Hash(string) {
+
+    const encoder = new TextEncoder();
+
+    const bytes =
+        Array.from(
+            encoder.encode(string)
+        );
+
+    const originalLength = bytes.length;
+
+    bytes.push(128);
+
+    while (bytes.length % 64 !== 56) {
+
+        bytes.push(0);
+
+    }
+
+    const bitLength =
+        originalLength * 8;
+
+    for (let i = 0; i < 8; i++) {
+
+        bytes.push(
+            Math.floor(
+                bitLength /
+                Math.pow(2, 8 * i)
+            ) & 255
+        );
+
+    }
+
+    let a0 = 0x67452301;
+    let b0 = 0xefcdab89;
+    let c0 = 0x98badcfe;
+    let d0 = 0x10325476;
+
+    const s = [
+
+        7,12,17,22,
+        7,12,17,22,
+        7,12,17,22,
+        7,12,17,22,
+
+        5,9,14,20,
+        5,9,14,20,
+        5,9,14,20,
+        5,9,14,20,
+
+        4,11,16,23,
+        4,11,16,23,
+        4,11,16,23,
+        4,11,16,23,
+
+        6,10,15,21,
+        6,10,15,21,
+        6,10,15,21,
+        6,10,15,21
+
+    ];
+
+    const K = [];
+
+    for (let i = 0; i < 64; i++) {
+
+        K[i] =
+            Math.floor(
+                Math.abs(Math.sin(i + 1)) *
+                4294967296
+            ) >>> 0;
+
+    }
+
+    function leftRotate(x, c) {
+
+        return (
+            (x << c) |
+            (x >>> (32 - c))
+        );
+
+    }
+
+    function add(x, y) {
+
+        return (x + y) >>> 0;
+
+    }
+
+    for (
+        let offset = 0;
+        offset < bytes.length;
+        offset += 64
+    ) {
+
+        const M = [];
+
+        for (let i = 0; i < 16; i++) {
+
+            M[i] =
+                bytes[offset + i * 4] |
+                (bytes[offset + i * 4 + 1] << 8) |
+                (bytes[offset + i * 4 + 2] << 16) |
+                (bytes[offset + i * 4 + 3] << 24);
+
+        }
+
+        let A = a0;
+        let B = b0;
+        let C = c0;
+        let D = d0;
+
+        for (let i = 0; i < 64; i++) {
+
+            let F;
+            let g;
+
+            if (i < 16) {
+
+                F =
+                    (B & C) |
+                    (~B & D);
+
+                g = i;
+
+            } else if (i < 32) {
+
+                F =
+                    (D & B) |
+                    (~D & C);
+
+                g =
+                    (5 * i + 1) % 16;
+
+            } else if (i < 48) {
+
+                F =
+                    B ^ C ^ D;
+
+                g =
+                    (3 * i + 5) % 16;
+
+            } else {
+
+                F =
+                    C ^ (B | ~D);
+
+                g =
+                    (7 * i) % 16;
+
+            }
+
+            const temp = D;
+
+            D = C;
+
+            C = B;
+
+            B =
+                add(
+                    B,
+                    leftRotate(
+                        add(
+                            add(
+                                add(A, F),
+                                K[i]
+                            ),
+                            M[g]
+                        ),
+                        s[i]
+                    )
+                );
+
+            A = temp;
+
+        }
+
+        a0 = add(a0, A);
+        b0 = add(b0, B);
+        c0 = add(c0, C);
+        d0 = add(d0, D);
+
+    }
+
+    function toHex(value) {
+
+        let result = "";
+
+        for (let i = 0; i < 4; i++) {
+
+            result +=
+                (
+                    (value >>> (i * 8)) & 255
+                )
+                .toString(16)
+                .padStart(2, "0");
+
+        }
+
+        return result;
+
+    }
+
+    return (
+        toHex(a0) +
+        toHex(b0) +
+        toHex(c0) +
+        toHex(d0)
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
